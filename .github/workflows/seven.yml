@@ -1,12 +1,21 @@
 on: push
 
 jobs:
-    job1:
+    npm-build:
+        name: pnpm build 的工作
         runs-on: ubuntu-latest
+        
         steps:
-        - run: pwd
-        - run: ls
-    job2:
-        runs-on: window-latest
-        steps:
-        - run: node --version            
+        -   name: 读取仓库内容
+            uses: actions/checkout@v4
+
+        -   name: 获取路径
+            run: pwd
+        -   name: 查看node版本
+            run: npm --version
+        -   name: 安装pnpm
+            run: npm install pnpm -g
+        -   name: 安装依赖环境
+            run: pnpm install
+        -   name: 项目打包
+            run: pnpm build    
