@@ -16,7 +16,7 @@ jobs:
         -   name: 获取路径
             run: pwd
         -   name: 查看node版本
-            run: npm --version
+            run: node --version
         -   name: 安装pnpm
             run: npm install pnpm -g
         -   name: 安装依赖环境
