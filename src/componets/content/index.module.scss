@@ -1,0 +1,11 @@
+.content{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .img-item{
+        width: 300px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}

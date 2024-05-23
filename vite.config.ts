@@ -6,6 +6,17 @@ import path from 'path'
 export default defineConfig({
   base:"/action-seven/",
   plugins: [react()],
+  server:{
+    proxy:{
+        '/api':{
+            target:"http://192.168.120.112",
+            changeOrigin:true,
+            ws:true,
+            secure:false,
+            rewrite:(path)=>path.replace(/^\/api/,""),
+        }
+    }
+  },
   resolve: {
     alias:{
       '@': path.resolve(__dirname,'./src')

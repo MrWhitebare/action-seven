@@ -8,6 +8,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
+import ContentUI from './componets/content';
 import styles from './App.module.scss'
 
 const { Header, Sider, Content } = Layout;
@@ -71,7 +72,7 @@ function App() {
               minHeight: 280,
             }}
           >
-            Content
+            <ContentUI/>
           </Content>
         </Layout>
       </Layout>
