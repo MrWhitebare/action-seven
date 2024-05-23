@@ -83,7 +83,7 @@ const Content: React.FC<ContentProps> = (props: ContentProps) => {
         console.log(`current index: ${current}, prev index: ${prev}`);
     }
 
-    return (<div className={styles.content}>
+    return (<div className={`${className} styles.content`}>
         <Button type="primary" onClick={loadingResource}>图片加载</Button>
         <Divider>图片</Divider>
         <Image.PreviewGroup preview={
