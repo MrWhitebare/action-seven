@@ -1,0 +1,62 @@
+:global{
+    #root{
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+.login-root{
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right top, #6d327c, #485DA6, #00a1ba, #00BF98, #36C486);
+    position: relative;
+    .description{
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%,-20%);
+        font-weight: 900;
+        font-size: 3em;
+        text-align: center;
+        width: 50%;
+        margin: 0 auto 50px;
+        text-shadow: 2px 3px 0px rgba(150, 150, 150, 1);
+        line-height: 1.2;
+    }
+    .login{
+        position: absolute;
+        width: 500px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        label{
+            color: white;
+        }
+        :global{
+            .ant-form-item-required{
+                color: white !important;
+            }
+        }
+    }
+    &::before{
+        content: '';
+        position: absolute;
+        display: block;
+        background-image: url('assets/color-scheme-left.svg');
+        width: 25%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position:left bottom;
+    }
+    &::after{
+        content: '';
+        position: absolute;
+        right: 0;
+        display: block;
+        background-image: url('assets/color-scheme-right.svg');
+        width: 25%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: right bottom;
+    }
+}

@@ -97,3 +97,22 @@ button:focus-visible {
   background: #b4b4b4;
   border-radius: 4px;
 }
+
+.loading{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #2C3E50;
+  background-image: url('assets/puff.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 180px 180px;
+  position: relative;
+  &::before{
+    content: 'Loading...';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+}

@@ -1,21 +1,13 @@
-import { useState } from 'react'
-import { Avatar, Button, ConfigProvider, Layout, Menu } from 'antd'
-import {
-  AndroidOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import ContentUI from './componets/content';
-import styles from './App.module.scss'
+import React from 'react'
+import { ConfigProvider } from 'antd'
+import { Route, Routes } from 'react-router-dom'
+import NotFound from '@/pages/404'
+import Content from './componets/content';
 
-const { Header, Sider, Content } = Layout;
+const Login = React.lazy(()=>import('@/pages/login'));
+const Home =React.lazy(()=>import('@/pages/home'));
 
 function App() {
-
-  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <ConfigProvider
@@ -26,56 +18,16 @@ function App() {
           colorBgContainer: "#f6ffed"
         }
       }}>
-      <Layout className={styles.layout}>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <Avatar className={styles.avatar} icon={<AndroidOutlined />}/>
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            items={[
-              {
-                key: '1',
-                icon: <UserOutlined />,
-                label: 'nav 1',
-              },
-              {
-                key: '2',
-                icon: <VideoCameraOutlined />,
-                label: 'nav 2',
-              },
-              {
-                key: '3',
-                icon: <UploadOutlined />,
-                label: 'nav 3',
-              },
-            ]}
-          />
-        </Sider>
-        <Layout>
-          <Header className={styles.header}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
-            />
-          </Header>
-          <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: 280,
-            }}
-          >
-            <ContentUI/>
-          </Content>
-        </Layout>
-      </Layout>
+      <Routes>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/' element={<Home/>}>
+          <Route path='/preview' element={<Content/>}/>
+          <Route path='/nav2' element={<div>nav2</div>}/>
+          <Route path='/nav3' element={<div>nav3</div>}/>
+          <Route path='/dashboard' element={<div>dashboard</div>}/>
+          <Route path='*' element={<NotFound/>}/>
+        </Route>
+      </Routes>
     </ConfigProvider>)
 }
 
