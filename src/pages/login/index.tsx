@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, FormProps, Input } from 'antd';
 import styles from './index.module.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import QueryString from 'qs';
 
 type FieldType = {
@@ -9,7 +9,7 @@ type FieldType = {
   remember?: string;
 };
 
-const Login: React.FC = (props) => {
+const Login: React.FC = () => {
 
   const navigate=useNavigate();
 

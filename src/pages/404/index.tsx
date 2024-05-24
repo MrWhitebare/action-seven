@@ -1,6 +1,6 @@
 import { Button, Result } from "antd"
 import styles from './index.module.scss';
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const NotFound:React.FC=()=>{
 
