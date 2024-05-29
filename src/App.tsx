@@ -2,7 +2,8 @@ import React from 'react'
 import { ConfigProvider } from 'antd'
 import { Route, Routes } from 'react-router-dom'
 import NotFound from '@/pages/404'
-import Content from './componets/content';
+import Region from '@/pages/region'
+import Content from '@/componets/content';
 
 const Login = React.lazy(()=>import('@/pages/login'));
 const Home =React.lazy(()=>import('@/pages/home'));
@@ -22,7 +23,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/' element={<Home/>}>
           <Route path='/preview' element={<Content/>}/>
-          <Route path='/nav2' element={<div>nav2</div>}/>
+          <Route path='/region' element={<Region/>}/>
           <Route path='/nav3' element={<div>nav3</div>}/>
           <Route path='/dashboard' element={<div>dashboard</div>}/>
           <Route path='*' element={<NotFound/>}/>

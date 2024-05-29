@@ -10,8 +10,8 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import styles from './index.module.scss';
 import { Navigate, useNavigate ,Outlet} from 'react-router-dom';
+import styles from './index.module.scss';
 
 const { Header, Sider, Content } = Layout;
 
@@ -51,9 +51,9 @@ function Home() {
               label: '图片预览',
             },
             {
-              key: 'nav2',
+              key: 'region',
               icon: <VideoCameraOutlined />,
-              label: 'nav 2',
+              label: '区域权限',
             },
             {
               key: 'nav3',

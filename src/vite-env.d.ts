@@ -7,3 +7,15 @@ export interface FileManageResponse<T>{
     status:boolean,
     time:Date
 }
+
+export interface DataServerResponse<T>{
+    code:number;
+    message:number;
+    cose:number;
+    status:boolean;
+    result:{
+        config:{};
+        data:T;
+        total:number;
+    }
+}

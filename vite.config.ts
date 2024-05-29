@@ -14,6 +14,13 @@ export default defineConfig({
             ws:true,
             secure:false,
             rewrite:(path)=>path.replace(/^\/api/,""),
+        },
+        '/data':{
+            target:"http://192.168.120.112:8080",
+            changeOrigin:true,
+            ws:true,
+            secure:false,
+            rewrite:(path)=>path.replace(/^\/data/,""),    
         }
     }
   },
