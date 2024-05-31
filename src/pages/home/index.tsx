@@ -56,9 +56,9 @@ function Home() {
               label: '区域权限',
             },
             {
-              key: 'nav3',
+              key: 'webrtc',
               icon: <UploadOutlined />,
-              label: 'nav 3',
+              label: 'WebRtc',
             },
             {
               key:"dashboard",

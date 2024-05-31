@@ -3,6 +3,7 @@ import { ConfigProvider } from 'antd'
 import { Route, Routes } from 'react-router-dom'
 import NotFound from '@/pages/404'
 import Region from '@/pages/region'
+import WebRtcUI from './pages/webrtc'
 import Content from '@/componets/content';
 
 const Login = React.lazy(()=>import('@/pages/login'));
@@ -24,7 +25,7 @@ function App() {
         <Route path='/' element={<Home/>}>
           <Route path='/preview' element={<Content/>}/>
           <Route path='/region' element={<Region/>}/>
-          <Route path='/nav3' element={<div>nav3</div>}/>
+          <Route path='/webrtc' element={<WebRtcUI/>}/>
           <Route path='/dashboard' element={<div>dashboard</div>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>

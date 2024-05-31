@@ -7,6 +7,7 @@ export default defineConfig({
   base:"/action-seven/",
   plugins: [react()],
   server:{
+    host:'0.0.0.0',
     proxy:{
         '/api':{
             target:"http://192.168.120.112",
