@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { Key, useEffect, useState } from "react";
 import { DataServerResponse } from "@/vite-env";
-import {TreeSelect, TreeSelectProps} from 'antd';
+import {Divider, Result, Tree, TreeProps, TreeSelect, TreeSelectProps} from 'antd';
+import { LoadingOutlined } from "@ant-design/icons";
 import styles from './index.module.scss';
 
 const {SHOW_PARENT}=TreeSelect;
@@ -24,7 +25,22 @@ type regionItem={
     code:string;
     id:string;
     parentId:string|null;
+    name?:string;
     children?:regionItem[];
+};
+
+const mainlandChina={
+    coun_name:"",
+    city_name:"",
+    code:"860000",
+    address:"中华人民共和国",
+    geoq_featureid:"88a770b0-f9db-41af-8779-5a26e6a7efc5",
+    prov_name:"",
+    level:1,
+    city_code:"",
+    prov_code:"",
+    parentId:null,
+    id:"all"
 };
 
 const Region:React.FC=()=>{
@@ -54,8 +70,8 @@ const Region:React.FC=()=>{
         for(let item of data){
             if(item.parentId===null){
                 let parent:treeItem={
-                    key:item.geoq_featureid,
-                    title:item.address,
+                    key:item.id,
+                    title:item.name!,
                     value:item.id,
                 };
                 parent.children=getChildNode(item.id,data);
@@ -70,12 +86,17 @@ const Region:React.FC=()=>{
         for(let item of data){
             if(item.parentId===id){
                 children.push({
-                    key:item.geoq_featureid,
-                    title:item.address,
+                    key:item.id,
+                    title:item.name!,
                     value:item.id,
                 });
             }
         }
+        children.sort((a,b)=>{
+            let [v1]=a.value.toString().split('_'),
+                [v2]=b.value.toString().split('_');
+            return parseInt(v1)-parseInt(v2);    
+        });
         //性能优化不在查找已经找到的节点 否则会引起递归超栈
         children.forEach(item=>{
             let index=data.findIndex(it=>it.id===item.value);
@@ -99,8 +120,9 @@ const Region:React.FC=()=>{
         params.append("tableId",'"org"."public"."938d3e37-9ee7-4463-ab10-d0bef1eb2b55"');
         params.append("f","json_geogeometry");
         params.append("fields",JSON.stringify(fields));
-        params.append("where",`(level in (2,3,4) and prov_code not in ('110000','120000','310000','500000','710000','810000','820000') ) 
-                        or (level=2 and prov_code in ('110000','120000','310000','500000'))`);
+        // params.append("where",`(level in (2,3,4) and prov_code not in ('110000','120000','310000','500000','710000','810000','820000') ) 
+        //                 or (level=2 and prov_code in ('110000','120000','310000','500000'))`);
+        params.append("where",`level in (2,3,4) and geoq_featureid <> '95920513-35b3-44e7-b462-e928ccd832b6'`);
         fetch(url,{
             method:"POST",
             body:params,
@@ -108,36 +130,29 @@ const Region:React.FC=()=>{
             .then(data=>data.json())
             .then((res:DataServerResponse<regionItem[]>)=>{
                 let regionItems:regionItem[]=res.result.data;
-                regionItems.splice(0,0,{
-                    coun_name:"",
-                    city_name:"",
-                    code:"860000",
-                    address:"中华人民共和国",
-                    geoq_featureid:"88a770b0-f9db-41af-8779-5a26e6a7efc5",
-                    prov_name:"",
-                    level:1,
-                    city_code:"",
-                    prov_code:"",
-                    parentId:null,
-                    id:"all"
-                });
+                regionItems.splice(0,0,mainlandChina);
                 regionItems.forEach(item=>{
+                    const {address,prov_code,prov_name,level,city_code,city_name,code,coun_name}=item;
                     switch(item.level){
                         case 1:
                             item.parentId=null;
                             item.id="all";
+                            item.name=address;
                             break;
                         case 2:
                             item.parentId="all";
-                            item.id=item.prov_code;
+                            item.id=`${prov_code}_${level}`;
+                            item.name=prov_name;
                             break;
                         case 3:
-                            item.parentId=item.prov_code;
-                            item.id=item.city_code;       
+                            item.parentId=`${prov_code}_2`;
+                            item.id=`${city_code}_${level}`;  
+                            item.name=city_name;     
                             break;    
                         case 4:
-                            item.parentId=item.city_code;
-                            item.id=item.code;
+                            item.parentId=`${city_code}_3`;
+                            item.id=`${code}_${level}`;
+                            item.name=coun_name;
                             break;    
                     }
                 })
@@ -153,6 +168,14 @@ const Region:React.FC=()=>{
         console.log(newValues);
     }
 
+    const onCheck=(checked: Key[] | { checked: Key[]; halfChecked: Key[]; }, info: any)=>{
+        console.log("check",checked,info);
+    }
+
+    const onSelect=(selectedKeys:Key[], info:any)=>{
+        console.log("select",selectedKeys,info);
+    }
+
     const tProps:TreeSelectProps={
         className:styles.selector,
         treeData:options,
@@ -162,8 +185,20 @@ const Region:React.FC=()=>{
         placeholder:"Please select",
     };
 
+    const treeProps:TreeProps={
+        checkable:true,
+        treeData:options,
+        defaultExpandedKeys:["all"],
+        onCheck,
+        onSelect,
+        height:700
+    };
+
     return (<div className={styles["region-root"]}>
         <TreeSelect {...tProps}/>
+        <Divider>这是一条分割线</Divider>
+        {options.length>0?<Tree {...treeProps}/>
+            :<Result status={"info"} subTitle={<LoadingOutlined/>}/>}
     </div>)
 
 }
