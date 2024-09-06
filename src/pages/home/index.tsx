@@ -1,4 +1,4 @@
-import {  useState } from 'react'
+import {  FC, useState } from 'react'
 import { Avatar, Button, Layout, Menu, Popconfirm } from 'antd'
 import {
   AndroidOutlined,
@@ -11,21 +11,36 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Navigate, useNavigate ,Outlet} from 'react-router-dom';
+import {observer,inject} from 'mobx-react';
+import { UserStore } from '@/store/userStore';
 import styles from './index.module.scss';
 
 const { Header, Sider, Content } = Layout;
 
-function Home() {
+interface HomeProps{
+  user:UserStore
+}
+
+const Home:FC<HomeProps>=inject('user')(observer((props)=>{
+
+  const {user}=props;
+
   const [collapsed, setCollapsed] = useState(false);
   const navigate=useNavigate();
 
   let userInfo = localStorage.getItem("userInfo");
+
   if (!userInfo) {
     return (<Navigate to={'/login'} replace={true} />)
+  }else{
+    user.setRoleName("admin");
+    user.setUserName("admin");
   }
 
   const quitSystem=()=>{
     if(userInfo){
+      user.setRoleName(null);
+      user.setUserName(null);
       localStorage.clear();
       navigate('/login',{replace:true});
     }
@@ -76,6 +91,7 @@ function Home() {
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
           />
+          <div className={styles.info}>欢迎您 {user.userName}!</div>
           <div className={styles.avatar}>
             <Popconfirm title="是否退出系统？" onConfirm={quitSystem}>
               <Avatar size={"large"} 
@@ -91,6 +107,6 @@ function Home() {
         </Content>
       </Layout>
     </Layout>)
-}
+}))
 
 export default Home;

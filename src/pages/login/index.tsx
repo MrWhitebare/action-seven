@@ -1,7 +1,9 @@
 import { Button, Checkbox, Form, FormProps, Input } from 'antd';
-import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
 import QueryString from 'qs';
+import { observer,inject } from 'mobx-react';
+import { UserStore } from '@/store/userStore';
+import styles from './index.module.scss';
 
 type FieldType = {
   username?: string;
@@ -9,7 +11,13 @@ type FieldType = {
   remember?: string;
 };
 
-const Login: React.FC = () => {
+interface  LoginProps{
+  user:UserStore
+}
+
+const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
+
+  const {user}=props;
 
   const navigate=useNavigate();
 
@@ -20,6 +28,8 @@ const Login: React.FC = () => {
         token:"xxx"
       };
       localStorage.setItem('userInfo',QueryString.stringify(info));
+      user.setRoleName("admin");
+      user.setUserName("admin");
       navigate('/',{replace:true});
     }
     console.log('Success:', values);
@@ -74,6 +84,6 @@ const Login: React.FC = () => {
       </Form>
     </div>)
 
-}
+}))
 
 export default Login;

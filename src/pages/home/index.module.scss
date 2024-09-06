@@ -20,9 +20,16 @@
     background-color: white;
     padding: 0;
     position: relative;
+
     .btn-expand{
         width: 64px;
         height: 64px;
+    }
+
+    .info{
+        position: absolute;
+        top:0;
+        right: 120px;
     }
 
     .avatar{
