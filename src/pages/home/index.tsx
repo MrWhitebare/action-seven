@@ -18,7 +18,7 @@ import styles from './index.module.scss';
 const { Header, Sider, Content } = Layout;
 
 interface HomeProps{
-  user:UserStore
+  user?:UserStore
 }
 
 const Home:FC<HomeProps>=inject('user')(observer((props)=>{
@@ -33,14 +33,14 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
   if (!userInfo) {
     return (<Navigate to={'/login'} replace={true} />)
   }else{
-    user.setRoleName("admin");
-    user.setUserName("admin");
+    user?.setRoleName("admin");
+    user?.setUserName("admin");
   }
 
   const quitSystem=()=>{
     if(userInfo){
-      user.setRoleName(null);
-      user.setUserName(null);
+      user?.setRoleName(null);
+      user?.setUserName(null);
       localStorage.clear();
       navigate('/login',{replace:true});
     }
@@ -91,7 +91,7 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
           />
-          <div className={styles.info}>欢迎您 {user.userName}!</div>
+          <div className={styles.info}>欢迎您 {user?.userName}!</div>
           <div className={styles.avatar}>
             <Popconfirm title="是否退出系统？" onConfirm={quitSystem}>
               <Avatar size={"large"} 
