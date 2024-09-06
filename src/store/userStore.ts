@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable,action} from "mobx";
 
 export class UserStore{
 
@@ -7,16 +7,17 @@ export class UserStore{
     role:string|null;
 
     constructor(){
-        makeAutoObservable(this);
+        makeAutoObservable(this,
+            {
+                setUserInfo:action
+            }
+        );
         this.userName=null;
         this.role=null;
     }
 
-    setUserName(userName:string|null){
+    setUserInfo(userName:string|null,role:string|null){
         this.userName=userName;
-    }
-
-    setRoleName(role:string|null){
         this.role=role;
     }
 

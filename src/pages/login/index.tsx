@@ -28,9 +28,8 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
         token:"xxx"
       };
       localStorage.setItem('userInfo',QueryString.stringify(info));
-      user?.setRoleName("admin");
-      user?.setUserName("admin");
-      navigate('/',{replace:true});
+      user?.setUserInfo("admin","administrator");
+      navigate('/preview',{replace:true});
     }
     console.log('Success:', values);
   };
