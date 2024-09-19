@@ -1,0 +1,15 @@
+.game-ui {
+
+    height: 100%;
+    width: 100%;
+
+    .item {
+        margin-bottom: 10px;
+        padding-left: 40px;
+
+        .reset {
+            background-color: red;
+
+        }
+    }
+}

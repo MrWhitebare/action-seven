@@ -5,12 +5,13 @@ import {
   DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  NumberOutlined,
   PictureOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Navigate, useNavigate ,Outlet} from 'react-router-dom';
+import { Navigate, useNavigate ,Outlet, useLocation} from 'react-router-dom';
 import {observer,inject,useLocalObservable} from 'mobx-react';
 import { UserStore } from '@/store/userStore';
 import { WebSocketClient } from '@/utils/WebSocketClient';
@@ -26,6 +27,8 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
 
   const {user}=props;
 
+  const location=useLocation();
+
   const store=useLocalObservable(()=>({
 
     collapsed:false,
@@ -36,26 +39,30 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
 
     menubar:"preview",
 
-    setMenubar(menubar:"preview"|"region"|"webrtc"|"dashboard"){
+    setMenubar(menubar:string){
       this.menubar=menubar;
     }
 
   }));
 
   useEffect(()=>{
-    const ws=new WebSocketClient('ws://localhost:5000/webSockets');
-    ws.connect();
-    // 同原生方法
-    ws.onclose(() => {});
-    // 同原生方法
-    ws.onerror(() => {});
-    // 同原生方法
-    ws.onmessage(() => {
-        // 同原生方法
-        ws.send('自定义发送的数据');
-    });
-    // 同原生方法
-    ws.onopen(() => {});
+    // const ws=new WebSocketClient('ws://localhost:5000/webSockets');
+    // ws.connect();
+    // // 同原生方法
+    // ws.onclose(() => {});
+    // // 同原生方法
+    // ws.onerror(() => {});
+    // // 同原生方法
+    // ws.onmessage(() => {
+    //     // 同原生方法
+    //     ws.send('自定义发送的数据');
+    // });
+    // // 同原生方法
+    // ws.onopen(() => {});
+    
+    if(location){
+      store.setMenubar(location.pathname.replace("/",""));
+    }
   },[])
 
   const navigate=useNavigate();
@@ -112,7 +119,12 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
               key:"dashboard",
               icon: <DashboardOutlined />,
               label:"看板"
-            }
+            },
+            {
+              key:"game",
+              icon:<NumberOutlined/>,
+              label:"游戏"
+            },
           ]}
         />
       </Sider>

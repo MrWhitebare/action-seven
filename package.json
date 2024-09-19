@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.3.7",
+    "@ant-design/icons": "^5.5.0",
     "@monaco-editor/react": "^4.6.0",
-    "antd": "^5.17.3",
+    "antd": "^5.20.6",
     "immer": "^10.1.1",
     "js-web-screen-shot": "1.9.9-rc.18",
     "mobx": "^6.13.1",
