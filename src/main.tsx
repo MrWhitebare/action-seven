@@ -4,10 +4,12 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import userStore from '@/store/userStore'
 import { Provider } from 'mobx-react'
+import Loading from '@/pages/loading'
+import './services/AxiosCommonPlugin'
 import './index.scss'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <Suspense fallback={<div className='loading'/>}>
+  <Suspense fallback={<Loading/>}>
     <BrowserRouter>
       <Provider user={userStore}>
         <App/>

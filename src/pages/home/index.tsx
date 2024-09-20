@@ -15,6 +15,7 @@ import { Navigate, useNavigate ,Outlet, useLocation} from 'react-router-dom';
 import {observer,inject,useLocalObservable} from 'mobx-react';
 import { UserStore } from '@/store/userStore';
 import { WebSocketClient } from '@/utils/WebSocketClient';
+import QueryString from 'qs';
 import styles from './index.module.scss';
 
 const { Header, Sider, Content } = Layout;
@@ -46,20 +47,25 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
   }));
 
   useEffect(()=>{
-    // const ws=new WebSocketClient('ws://localhost:5000/webSockets');
-    // ws.connect();
-    // // 同原生方法
-    // ws.onclose(() => {});
-    // // 同原生方法
-    // ws.onerror(() => {});
-    // // 同原生方法
-    // ws.onmessage(() => {
-    //     // 同原生方法
-    //     ws.send('自定义发送的数据');
-    // });
-    // // 同原生方法
-    // ws.onopen(() => {});
     
+    const body={
+      role:"sender",
+      userId:"1",
+    };
+
+    const ws=new WebSocketClient(`ws://localhost:5000/webSockets?${QueryString.stringify(body)}`);
+    ws.connect();
+    // 同原生方法
+    ws.onclose(() => {});
+    // 同原生方法
+    ws.onerror(() => {});
+    // 同原生方法
+    ws.onmessage(() => {
+        // 同原生方法
+        ws.send('自定义发送的数据');
+    });
+    // 同原生方法
+    ws.onopen(() => {});
     if(location){
       store.setMenubar(location.pathname.replace("/",""));
     }
@@ -124,6 +130,11 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
               key:"game",
               icon:<NumberOutlined/>,
               label:"游戏"
+            },
+            {
+              key:"user",
+              icon:<UserOutlined/>,
+              label:"用户"
             },
           ]}
         />

@@ -11,6 +11,7 @@ const Home = React.lazy(()=>import('@/pages/home'));
 const WebRtcUI =React.lazy(()=>import('@/pages/webrtc'));
 const Dashboard = React.lazy(()=>import('@/pages/dashboard'));
 const GameUI =React.lazy(()=>import('@/pages/game'));
+const UserUI=React.lazy(()=>import('@/pages/user'));
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='/webrtc' element={<WebRtcUI/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/game' element={<GameUI/>}/>
+          <Route path='/user' element={<UserUI/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>
       </Routes>

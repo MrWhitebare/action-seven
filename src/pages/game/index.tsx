@@ -148,7 +148,12 @@ const GameUI: React.FC = (): ReactElement => {
     }
 
     const onEnter = () => {
-        const { guess, range: [min, max], targetValue, count,success } = store;
+        const { guess, range: [min, max], targetValue,success } = store;
+        
+        if(guess===null||isNaN(guess)){
+            message.error("请输入数字！");
+            return;
+        }
 
         if(success) {
             message.error("游戏已结束,请重置游戏！");
