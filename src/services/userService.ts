@@ -1,6 +1,6 @@
 import {axios} from './AxiosCommonPlugin';
 
-type userInfo={
+export type userInfo={
     nickName:string;
     password?:string;
     mobile:string;

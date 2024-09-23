@@ -1,8 +1,8 @@
 import React,{FC, Fragment, useEffect} from "react";
-import { Button, Col, message, Modal, PaginationProps, Row, Table, TableProps } from "antd";
+import { Button, Col, message, Modal, PaginationProps, Row, Table, TableProps, Form, FormProps, Input, Radio } from "antd";
 import dayjs from "dayjs";
 import {useLocalObservable,observer, Observer} from 'mobx-react';
-import userService from "@/services/userService";
+import userService,{userInfo} from "@/services/userService";
 import { DataType, pageInfo, UserState} from "./types";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from './index.module.scss';
@@ -79,6 +79,8 @@ const User:FC=observer(()=>{
 
     }));
 
+    const [form]=Form.useForm();
+
     useEffect(()=>{
         const {current,pageSize}=store;
         userService.getAllUsers(current,pageSize)
@@ -111,10 +113,68 @@ const User:FC=observer(()=>{
     };
 
     const getCreateUserUI=()=>{
+
+        const formProps:FormProps={
+            labelCol:{span:4},
+            wrapperCol:{span:14},
+            layout:"horizontal",
+            form,
+            onFinish:(values:userInfo)=>{
+                userService.createUser(values)
+                .then((item)=>{
+                    if(item){
+                        message.success("创建用户成功！");
+                    }
+                })  
+                .catch(e=>message.error("创建用户失败！"))
+                .finally(()=>{
+                    store.toggleShow();
+                })
+            }
+        };
+
+        const onCreateUserOk=()=>{
+           form.submit();
+        }
+
+        const onCancel=()=>{
+            store.toggleShow();
+            form.resetFields();
+        }
+
         return (<Observer>{()=>{
             const {open}=store;
-            return (<Modal title={"创建用户"} open={open} onClose={store.toggleShow}>
-                1111
+            return (<Modal title={"创建用户"} 
+                        open={open} 
+                        onCancel={onCancel}
+                        okText={"确认"} cancelText={"取消"}
+                        onOk={onCreateUserOk}
+                        >
+                <Form {...formProps}>
+                    <Form.Item label={"用户名"} name={"nickname"}
+                        rules={[{required:true,message:"用户名为必填项"}]}>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item label={"密码"} name={"password"} 
+                        rules={[{required:true,message:"密码为必填项"}]}>
+                        <Input.Password/>
+                    </Form.Item>
+                    <Form.Item label={"平台"} name={"platform"}
+                        rules={[{required:true,message:"平台为必填项"}]}>
+                        <Radio.Group>
+                            <Radio value={"xhs"}>小红书</Radio>
+                            <Radio value={"weChat"}>微信</Radio>
+                            <Radio value={"QQ"}>QQ</Radio>
+                            <Radio value={"Bilibili"}>B站</Radio>
+                            <Radio value={"alipay"}>支付宝</Radio>
+                        </Radio.Group>
+                    </Form.Item>
+                    <Form.Item label={"电话号码"} name={"moblie"}
+                        rules={[{required:true,message:"电话为必填项"}]}
+                        >
+                        <Input/>
+                    </Form.Item>
+                </Form>
             </Modal>)
         }}</Observer>)
     }
@@ -130,6 +190,7 @@ const User:FC=observer(()=>{
                columns={columns}
                dataSource={store.dataSource}
                pagination={pagination}/>
+        {getCreateUserUI()}
     </div>)
 })
 

@@ -3,7 +3,7 @@
     height: 100%;
     width: 100%;
 
-    .item {
+    .item, .result {
         margin-bottom: 10px;
         padding-left: 40px;
 
@@ -11,5 +11,10 @@
             background-color: red;
 
         }
+    }
+
+    .result{
+        overflow-y: auto;
+        height: calc(100% - 200px);
     }
 }

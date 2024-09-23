@@ -237,7 +237,7 @@ const GameUI: React.FC = (): ReactElement => {
                 </Col>
             </Row>
             <Divider>结果区域</Divider>
-            <Row className={styles.item}>
+            <Row className={styles.result}>
                 <Col span={24}>
                     <List itemLayout="horizontal">
                         {store.logs.length > 0 ?
