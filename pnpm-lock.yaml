@@ -17,6 +17,9 @@ dependencies:
   axios:
     specifier: ^1.7.7
     version: 1.7.7
+  dayjs:
+    specifier: ^1.11.13
+    version: 1.11.13
   immer:
     specifier: ^10.1.1
     version: 10.1.1

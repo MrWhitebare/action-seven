@@ -22,6 +22,13 @@ export default defineConfig({
             ws:true,
             secure:false,
             rewrite:(path)=>path.replace(/^\/data/,""),    
+        },
+        '/koa':{
+            target:"http://localhost:5000",
+            changeOrigin:true,
+            ws:true,
+            secure:false,
+            rewrite:(path)=>path.replace(/^\/koa/,""),  
         }
     }
   },

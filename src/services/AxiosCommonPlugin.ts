@@ -1,8 +1,8 @@
 import axios from "axios";
-import Qs from 'querystring';
 import { message } from "antd";
+import QueryString from "qs";
 
-export type Response={
+export type ApiResponse={
     code:number;
     data:{};
     message:string;
@@ -26,16 +26,17 @@ axios.interceptors.request.use((request)=>{
         Object.keys(data).forEach(key => {
             data[key] = isObject(data[key]) ? JSON.stringify(data[key]) : data[key]
         });
-        Qs.stringify(data);
+        request.data=QueryString.stringify(data);
     }
 
     return request;
 
 });
 
+
 axios.interceptors.response.use((response)=>{
-    const {data} = response,
-        {code, data:result} = data || {};
+    let {data} = response;
+    const {code, data:result} =data;
     switch(code){
         case 200:
             return result;
@@ -51,4 +52,8 @@ axios.interceptors.response.use((response)=>{
     }
 })
 
-export {};
+const get=axios.get;
+
+const post=axios.post;
+
+export {get,post,axios};
