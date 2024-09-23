@@ -1,1 +1,0 @@
-import{r as e,bd as r,aa as t}from"./index-CJqm67pM.js";const a={"user-container":"_user-container_1s8f0_1"},n=()=>(e.useEffect(()=>{r.post("/game/user/getAllUsers").then(s=>{console.log(s)})},[]),t.jsx("div",{className:a["user-container"],children:"用户"}));export{n as default};
