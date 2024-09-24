@@ -10,11 +10,11 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  WechatOutlined,
 } from '@ant-design/icons';
 import { Navigate, useNavigate ,Outlet, useLocation} from 'react-router-dom';
 import {observer,inject,useLocalObservable} from 'mobx-react';
 import { UserStore } from '@/store/userStore';
-import { WebSocketClient } from '@/utils/WebSocketClient';
 import QueryString from 'qs';
 import styles from './index.module.scss';
 
@@ -47,25 +47,6 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
   }));
 
   useEffect(()=>{
-    
-    const body={
-      role:"sender",
-      userId:"1",
-    };
-
-    const ws=new WebSocketClient(`ws://localhost:5000/webSockets?${QueryString.stringify(body)}`);
-    ws.connect();
-    // 同原生方法
-    ws.onclose(() => {});
-    // 同原生方法
-    ws.onerror(() => {});
-    // 同原生方法
-    ws.onmessage(() => {
-        // 同原生方法
-        ws.send('自定义发送的数据');
-    });
-    // 同原生方法
-    ws.onopen(() => {});
     if(location){
       store.setMenubar(location.pathname.replace("/",""));
     }
@@ -78,7 +59,8 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
   if (!userInfo) {
     return (<Navigate to={'/login'} replace={true} />)
   }else{
-    user?.setUserInfo("admin","administrator");
+    const curUser=QueryString.parse(userInfo);
+    user?.setUserInfo(curUser.nickname as string,"administrator");
   }
 
   const quitSystem=()=>{
@@ -135,6 +117,11 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
               key:"user",
               icon:<UserOutlined/>,
               label:"用户"
+            },
+            {
+              key:"weChat",
+              icon:<WechatOutlined/>,
+              label:"聊天"
             },
           ]}
         />

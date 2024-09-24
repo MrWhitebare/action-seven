@@ -22,6 +22,13 @@ axios.interceptors.request.use((request)=>{
 
     headers.set("platform","pc");
 
+    let userInfo=localStorage.getItem("userInfo"),
+        user=QueryString.parse(userInfo!);
+
+    if(user.token){
+        headers.set("Authorization",`Bearer ${user.token}`);
+    }    
+
     if (isObject(data)) {
         Object.keys(data).forEach(key => {
             data[key] = isObject(data[key]) ? JSON.stringify(data[key]) : data[key]

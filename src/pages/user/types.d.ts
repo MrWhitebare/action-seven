@@ -20,8 +20,11 @@ export type UserState={
     pageSize:number;
     total:number;
     open:boolean;
+    loading:boolean;
     setData:(list:DataType[],page:pageInfo)=>void;
     setPageSize:(current:number,size:current)=>void;
     setCurrent:(current:number)=>void;
     toggleShow:()=>void;
+    toggleLoading:()=>void;
+    getUserData:(current:number,pageSize:number)=>void;
 };

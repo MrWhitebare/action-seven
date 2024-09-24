@@ -1,8 +1,9 @@
-import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import QueryString from 'qs';
 import { observer,inject } from 'mobx-react';
 import { UserStore } from '@/store/userStore';
+import userService from '@/services/userService';
 import styles from './index.module.scss';
 
 type FieldType = {
@@ -30,8 +31,18 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
       localStorage.setItem('userInfo',QueryString.stringify(info));
       user?.setUserInfo("admin","administrator");
       navigate('/preview',{replace:true});
+    }else{
+      const {username,password}=values;
+      userService.getAccessToken(username!,password!)
+        .then((data:any)=>{
+          const {token,info}=data;
+          info.token=token;
+          localStorage.setItem('userInfo',QueryString.stringify(info));
+          user?.setUserInfo(username!,"administrator");
+          navigate('/preview',{replace:true});
+        })
+        .catch(e=>message.error("登录失败"+e));
     }
-    console.log('Success:', values);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {

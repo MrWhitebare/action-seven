@@ -12,6 +12,7 @@ const WebRtcUI =React.lazy(()=>import('@/pages/webrtc'));
 const Dashboard = React.lazy(()=>import('@/pages/dashboard'));
 const GameUI =React.lazy(()=>import('@/pages/game'));
 const UserUI=React.lazy(()=>import('@/pages/user'));
+const WeChatUI=React.lazy(()=>import('@/pages/weChat'));
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/game' element={<GameUI/>}/>
           <Route path='/user' element={<UserUI/>}/>
+          <Route path='/weChat'element={<WeChatUI/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>
       </Routes>

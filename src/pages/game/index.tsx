@@ -231,7 +231,7 @@ const GameUI: React.FC = (): ReactElement => {
                 </Col>
                 <Col span={2}>
                     <Button type="primary" disabled={store.success?false:store.existTarget}
-                        className={store.success?styles.reset:""}
+                        className={store.success?styles.reset:styles.start}
                         onClick={startGame}
                     >{store.success?"重置":"开始游戏"}</Button>
                 </Col>

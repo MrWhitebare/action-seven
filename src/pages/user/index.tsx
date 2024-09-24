@@ -7,7 +7,7 @@ import { DataType, pageInfo, UserState} from "./types";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from './index.module.scss';
 
-const format="YYYY-MM-DD HH:mm:SS";
+const format="YYYY-MM-DD HH:mm:ss";
 
 const columns:TableProps<DataType>['columns']=[
     {
@@ -57,6 +57,8 @@ const User:FC=observer(()=>{
 
         open:false,
 
+        loading:false,
+
         setData(list:DataType[],page:pageInfo) {
             this.dataSource=list.map(item=>({...item,key:item.id}));
             this.total=page.total;
@@ -77,22 +79,28 @@ const User:FC=observer(()=>{
             this.open=!this.open;
         },
 
+        toggleLoading(){
+            this.loading=!this.loading;
+        },
+
+        getUserData(current:number,pageSize:number){
+            this.toggleLoading();
+            userService.getAllUsers(current,pageSize)
+                .then((data:any)=>{
+                    const {rows,count}=data;
+                    this.setData(rows,{total:count,current:this.current,pageSize:this.pageSize});
+                })
+                .catch(e=>message.error("获取用户数据失败！",e))
+                .finally(()=>store.toggleLoading())
+        },
+
     }));
 
     const [form]=Form.useForm();
 
     useEffect(()=>{
         const {current,pageSize}=store;
-        userService.getAllUsers(current,pageSize)
-            .then((data:any)=>{
-                const {rows,count}=data;
-                store.setData(rows,{
-                    total:count,
-                    current,
-                    pageSize
-                });
-            })
-            .catch(e=>message.error("获取用户数据失败！",e))
+        store.getUserData(current,pageSize);
     },[store.current,store.pageSize])
 
     const handleCreateUser=()=>{
@@ -121,12 +129,14 @@ const User:FC=observer(()=>{
             form,
             onFinish:(values:userInfo)=>{
                 userService.createUser(values)
-                .then((item)=>{
+                .then(async (item)=>{
                     if(item){
+                        const {current,pageSize}=store;
+                        store.getUserData(current,pageSize);
                         message.success("创建用户成功！");
                     }
                 })  
-                .catch(e=>message.error("创建用户失败！"))
+                .catch(e=>message.error("创建用户失败！"+e))
                 .finally(()=>{
                     store.toggleShow();
                 })
@@ -169,7 +179,7 @@ const User:FC=observer(()=>{
                             <Radio value={"alipay"}>支付宝</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item label={"电话号码"} name={"moblie"}
+                    <Form.Item label={"电话号码"} name={"mobile"}
                         rules={[{required:true,message:"电话为必填项"}]}
                         >
                         <Input/>
@@ -189,7 +199,8 @@ const User:FC=observer(()=>{
         <Table bordered className={styles['table-container']}
                columns={columns}
                dataSource={store.dataSource}
-               pagination={pagination}/>
+               pagination={pagination}
+               loading={store.loading}/>
         {getCreateUserUI()}
     </div>)
 })

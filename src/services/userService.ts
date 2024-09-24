@@ -18,13 +18,19 @@ const userService={
 
     createUser(options:userInfo){
         let content={
-                ...options,
-                password:"123456",
+                ...options
             },
             url=this.basePath+"/create";
         return axios.post(url,content);    
     },  
 
+    getAccessToken(nickname:string,password:string){
+        let content={
+            nickname,
+            password
+        }
+        return axios.post("/game/getAccessToken",content);
+    },
 };
 
 export default userService;
