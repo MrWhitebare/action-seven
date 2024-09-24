@@ -1,10 +1,10 @@
 import { makeAutoObservable,action } from "mobx";
-import dayjs from "dayjs";
 
 export type msgItem={
     msg:string;
     type:"sender"|"reader";
     time:string;
+    loaded?:boolean;
 }
 
 export class ChatStore{

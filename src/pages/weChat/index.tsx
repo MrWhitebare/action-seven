@@ -2,7 +2,7 @@ import React, { FC, Fragment, useEffect, useRef } from "react";
 import { observer, inject, useLocalObservable } from "mobx-react";
 import { ChatStore, msgItem } from "@/store/chatStore";
 import { UserStore } from "@/store/userStore";
-import { Avatar, Button, Divider, Empty, Input, message, Skeleton, Space } from "antd";
+import { Avatar, Badge, Button, Divider, Empty, Input, message, Skeleton, Space } from "antd";
 import userService from "@/services/userService";
 import { WebSocketClient } from "@/utils/WebSocketClient";
 import QueryString from "qs";
@@ -184,7 +184,9 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
                     <div className={`${styles["user-item"]} ${store.activeId === item.id && styles.active}`}
                         key={item.id}
                         onClick={handleActive(item.id)}>
-                        <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index + 1}`} />
+                        <Badge count={5} overflowCount={999}>
+                            <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index + 1}`} />
+                        </Badge>
                         <div>{item.nickname}</div>
                     </div>))}
             </Skeleton>
