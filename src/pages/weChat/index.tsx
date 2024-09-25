@@ -8,6 +8,7 @@ import { WebSocketClient } from "@/utils/WebSocketClient";
 import QueryString from "qs";
 import dayjs from "dayjs";
 import styles from './index.module.scss';
+import { it } from "node:test";
 
 interface WeChatUIProps {
     chat?: ChatStore,
@@ -122,18 +123,23 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
             const data=msg.data as string,
                 [_,userId,userInfo]=data.split("|"),
                 item=QueryString.parse(userInfo) as msgItem;
-            chat?.addItem(userId,{...item,type:"reader"});    
+            chat?.addItem(userId,{...item,type:"reader"},store.activeId);    
         });
         // 同原生方法
         ws.onopen(() => { });
         
         wsRef.current=ws;
 
+        return ()=>{
+            ws.close();
+        }
+
     }, [])
 
     const handleActive = (id: string) => {
         return () => {
             store.setActiveUser(id);
+            chat?.setNotice(id);
         }
     }
 
@@ -142,7 +148,7 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
         let item:msgItem={
             type:"sender",
             msg:msgInfo!,
-            time:dayjs().format("YYYY-MM-DD HH:mm:ss")
+            time:dayjs().format("YYYY-MM-DD HH:mm:ss"),
         };
         wsRef.current?.send(`message|${activeId}|${QueryString.stringify(item)}`);
         chat?.addItem(activeId!,item);
@@ -164,13 +170,17 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
             return (<div key={index + 1} className={styles["msg-item"]}>
                 {type === "reader" && <div className={styles.reader}>
                     <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>{store.avatars[activeId]}</Avatar>
-                    <div className={styles.msg}>{msg}</div>
-                    <div className={styles.tip}>{time}</div>
+                    <div className={styles.msg}>
+                        {msg}
+                        <div className={styles.tip}>{time}</div>
+                    </div>
                 </div>}
                 {type === "sender" && <div className={styles.sender}>
-                    <div className={styles.msg}>{msg}</div>
+                    <div className={styles.msg}>
+                        {msg}
+                        <div className={styles.tip}>{time}</div>
+                    </div>
                     <Avatar style={{ backgroundColor: '#bfc', color: '#f56a00' }}>{avatar}</Avatar>
-                    <div className={styles.tip}>{time}</div>
                 </div>}
             </div>)
         }))
@@ -184,7 +194,7 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
                     <div className={`${styles["user-item"]} ${store.activeId === item.id && styles.active}`}
                         key={item.id}
                         onClick={handleActive(item.id)}>
-                        <Badge count={5} overflowCount={999}>
+                        <Badge count={chat?.getNotice(item.id)} overflowCount={999}>
                             <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index + 1}`} />
                         </Badge>
                         <div>{item.nickname}</div>
@@ -203,7 +213,9 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
                 <Button className={styles.btn} 
                     type={"primary"} 
                     disabled={!store.isActive}
-                    onClick={handleSendMsg}>发送</Button>
+                    onClick={handleSendMsg}
+                    htmlType={"submit"}
+                    >发送</Button>
             </Space.Compact>
         </div>
     </div>)

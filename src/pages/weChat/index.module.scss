@@ -61,7 +61,6 @@
                 .sender {
                     display: flex;
                     align-items: center;
-                    position: relative;
                 }
 
                 .reader {
@@ -70,9 +69,7 @@
 
                 .sender {
                     align-self: self-end;
-                    .tip{
-                        left: 20px;
-                    }
+                    justify-content: flex-end;
                 }
 
                 .msg {
@@ -86,6 +83,7 @@
                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
                     border-radius: 5px;
                     margin: 0 15px;
+                    position: relative;
                 }
 
                 .tip {
@@ -93,7 +91,7 @@
                     color: rgba($color: #333, $alpha: 0.2);
                     position: absolute;
                     margin-top: 10px;
-                    left: 50px;
+                    left: 0;
                     top: 100%;
                 }
             }
