@@ -8,7 +8,6 @@ import { WebSocketClient } from "@/utils/WebSocketClient";
 import QueryString from "qs";
 import dayjs from "dayjs";
 import styles from './index.module.scss';
-import { it } from "node:test";
 
 interface WeChatUIProps {
     chat?: ChatStore,
