@@ -1,5 +1,5 @@
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import QueryString from 'qs';
 import { observer,inject } from 'mobx-react';
 import { UserStore } from '@/store/userStore';
@@ -22,7 +22,15 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
 
   const navigate=useNavigate();
 
+  const location=useLocation();
+
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    
+    let pathName=location.pathname;
+    if(pathName==="/login"){
+      pathName="/preview";
+    }
+    
     if(values.username==="admin"&&values.password==="123456"){
       let info={
         ...values,
@@ -30,7 +38,7 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
       };
       localStorage.setItem('userInfo',QueryString.stringify(info));
       user?.setUserInfo("admin","administrator");
-      navigate('/preview',{replace:true});
+      navigate(pathName,{replace:true});
     }else{
       const {username,password}=values;
       userService.getAccessToken(username!,password!)
@@ -39,7 +47,7 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
           info.token=token;
           localStorage.setItem('userInfo',QueryString.stringify(info));
           user?.setUserInfo(username!,"administrator");
-          navigate('/preview',{replace:true});
+          navigate(pathName,{replace:true});
         })
         .catch(e=>message.error("登录失败"+e));
     }

@@ -2,6 +2,7 @@ import {  FC, useEffect } from 'react'
 import { Avatar, Button, Layout, Menu, Popconfirm } from 'antd'
 import {
   AndroidOutlined,
+  CalculatorFilled,
   DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -122,6 +123,11 @@ const Home:FC<HomeProps>=inject('user')(observer((props)=>{
               key:"weChat",
               icon:<WechatOutlined/>,
               label:"聊天"
+            },
+            {
+              key:"doubleEleven",
+              icon:<CalculatorFilled/>,
+              label:"双十一满减"
             },
           ]}
         />

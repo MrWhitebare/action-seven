@@ -13,6 +13,7 @@ const Dashboard = React.lazy(()=>import('@/pages/dashboard'));
 const GameUI =React.lazy(()=>import('@/pages/game'));
 const UserUI=React.lazy(()=>import('@/pages/user'));
 const WeChatUI=React.lazy(()=>import('@/pages/weChat'));
+const DoubleEleven=React.lazy(()=>import('@/pages/doubleEleven'));
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
           <Route path='/game' element={<GameUI/>}/>
           <Route path='/user' element={<UserUI/>}/>
           <Route path='/weChat'element={<WeChatUI/>}/>
+          <Route path='/doubleEleven' element={<DoubleEleven/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>
       </Routes>
