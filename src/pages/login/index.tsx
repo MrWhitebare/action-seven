@@ -31,26 +31,17 @@ const Login: React.FC<LoginProps> =inject('user')(observer((props) => {
       pathName="/preview";
     }
     
-    if(values.username==="admin"&&values.password==="123456"){
-      let info={
-        ...values,
-        token:"xxx"
-      };
-      localStorage.setItem('userInfo',QueryString.stringify(info));
-      user?.setUserInfo("admin","administrator");
-      navigate(pathName,{replace:true});
-    }else{
-      const {username,password}=values;
-      userService.getAccessToken(username!,password!)
-        .then((data:any)=>{
-          const {token,info}=data;
-          info.token=token;
-          localStorage.setItem('userInfo',QueryString.stringify(info));
-          user?.setUserInfo(username!,"administrator");
-          navigate(pathName,{replace:true});
-        })
-        .catch(e=>message.error("登录失败"+e));
-    }
+    const {username,password}=values;
+    userService.getAccessToken(username!,password!)
+      .then((data:any)=>{
+        const {token,info}=data;
+        info.token=token;
+        localStorage.setItem('userInfo',QueryString.stringify(info));
+        user?.setUserInfo(username!,"administrator");
+        navigate(pathName,{replace:true});
+      })
+      .catch(e=>message.error("登录失败"+e));
+    
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
