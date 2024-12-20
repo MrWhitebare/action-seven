@@ -112,7 +112,7 @@ const WeChatUI: FC<WeChatUIProps> = inject('chat', 'user')(observer((props) => {
             };
 
         const host=window.location.host, 
-            ws = new WebSocketClient(`ws://${host}/koa/webSockets?${QueryString.stringify(body)}`);
+            ws = new WebSocketClient(`wss://${host}/koa/webSockets?${QueryString.stringify(body)}`);
         ws.connect();
         // 同原生方法
         ws.onclose(() => { });
